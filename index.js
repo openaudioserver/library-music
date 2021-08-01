@@ -5,9 +5,13 @@ const songs = require('./scan/songs.js')
 
 module.exports = {
   scan: async (library) => {
+    console.log('[music-indexer]', 'scanning songs')
     await songs.scan(library)
+    console.log('[music-indexer]', 'scanning albums')
     await albums.scan(library)
+    console.log('[music-indexer]', 'scanning genres')
     await genres.scan(library)
+    console.log('[music-indexer]', 'scanning persons')
     await persons.scan(library)
   },
   load: async (library) => {

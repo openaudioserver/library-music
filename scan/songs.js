@@ -6,10 +6,6 @@ module.exports = {
 
 async function scanSongs (library) {
   library.songs = []
-  library.api.songs = {
-    get: require('../api/songs.get.js'),
-    list: require('../api/songs.list.js')
-  }
   for (const file of library.files) {
     if (file.extension !== 'mp3' && file.extension !== 'flac') {
       continue
@@ -165,6 +161,5 @@ const commonTags = [
   'movementTotal',
   'podcastId',
   'showMovement',
-  'stik',
+  'stik'
 ]
-  
