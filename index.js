@@ -9,6 +9,8 @@ module.exports = {
     await albums.scan(library)
     await genres.scan(library)
     await persons.scan(library)
+  },
+  load: async (library) => {
     console.log('[indexer]', 'albums', library.albums.length)
     console.log('[indexer]', 'indexing album information')
     await albums.indexAlbumTracks(library.songs, library.albums)
