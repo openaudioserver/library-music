@@ -2,7 +2,7 @@
  changelog
 
 Check the repository commits for detailed information:  
-https://github.com/openaudioserver/music-library/commits/master
+https://github.com/openaudioserver/library-music/commits/master
 
 | Date       | Description                                                      |
 |------------|------------------------------------------------------------------|
