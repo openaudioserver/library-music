@@ -6,9 +6,9 @@ module.exports = {
 
 async function scanSongs (library) {
   library.songs = []
-  for (const file of library.files) {
+  library.files.forEach(async file => {
     if (file.extension !== 'mp3' && file.extension !== 'flac') {
-      continue
+      return
     }
     let metaData
     try {
@@ -47,7 +47,7 @@ async function scanSongs (library) {
       }
     }
     library.songs.push(song)
-  }
+  })
 }
 
 const commonTags = [

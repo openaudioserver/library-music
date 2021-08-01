@@ -4,7 +4,7 @@ function normalize (text) {
 
 module.exports = {
   scan: scanAlbums,
-  indexAlbumSongs,
+  indexAlbumTracks,
   indexAlbumGenres,
   indexAlbumPersons
 }
@@ -33,7 +33,7 @@ async function scanAlbums (library) {
   }
 }
 
-async function indexAlbumSongs (media, albums, index) {
+async function indexAlbumTracks (media, albums, index) {
   for (const album of albums) {
     album.tracks = []
     const tracks = media.filter(track => track.albumid === album.id)
