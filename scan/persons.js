@@ -31,7 +31,7 @@ function normalize (text) {
 async function scanPersons (library) {
   const uniquePersons = []
   library.personTypes = []
-  for (const track of library.tracks) {
+  await Promise.all(library.tracks.map(async track => {
     for (const type of personTypes) {
       if (!track[type] || !track[type].length) {
         continue
@@ -62,9 +62,8 @@ async function scanPersons (library) {
       }
       track[type] = names
     }
-  }
+  }))
 }
-
 
 async function indexPersonTracks (media, personTypes) {
   for (const person of personTypes) {

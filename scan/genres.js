@@ -12,9 +12,9 @@ function normalize (text) {
 async function scanGenres (library) {
   const uniqueKeys = []
   library.genres = []
-  for (const track of library.tracks) {
+  await Promise.all(library.tracks.map(async track => {
     if (!track.genres || !track.genres.length) {
-      continue
+      return
     }
     const genres = track.genres.split(',')
     for (const i in genres) {
@@ -36,9 +36,8 @@ async function scanGenres (library) {
       }
     }
     track.genres = genres
-  }
+  }))
 }
-
 
 async function indexGenreTracks (media, genres) {
   for (const genre of genres) {

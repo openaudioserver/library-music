@@ -12,9 +12,9 @@ module.exports = {
 async function scanAlbums (library) {
   library.albums = []
   const albumIndex = []
-  for (const track of library.tracks) {
+  await Promise.all(library.track.map(async track => {
     if (!track.album) {
-      continue
+      return
     }
     const key = normalize(track.artists) + normalize(track.album)
     if (albumIndex.indexOf(key) === -1) {
@@ -30,7 +30,7 @@ async function scanAlbums (library) {
         totaldiscs: track.totaldiscs
       })
     }
-  }
+  }))
 }
 
 async function indexAlbumTracks (media, albums, index) {

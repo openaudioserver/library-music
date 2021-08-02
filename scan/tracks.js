@@ -6,7 +6,7 @@ module.exports = {
 
 async function scanSongs (library) {
   library.tracks = []
-  library.files.forEach(async file => {
+  await Promise.all(library.files.map(async file => {
     if (file.extension !== 'mp3' && file.extension !== 'flac') {
       return
     }
@@ -14,7 +14,7 @@ async function scanSongs (library) {
     try {
       metaData = await MusicMetaData.parseFile(file.path)
     } catch (error) {
-      console.error('error reading meta data', file.path, error)
+      console.error('[music-indexer]', 'error reading meta data', file.path, error)
     }
     const track = {
       id: file.id,
@@ -47,7 +47,7 @@ async function scanSongs (library) {
       }
     }
     library.tracks.push(track)
-  })
+  }))
 }
 
 const commonTags = [
