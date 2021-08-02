@@ -28,7 +28,6 @@ module.exports = {
     console.log('[indexer]', 'indexing genre information')
     await genres.indexAlbums(library)
     await genres.indexTracks(library)
-    await genres.indexComposers(library)
     await genres.indexCredits(library)
     console.log('[indexer]', 'indexing persons information')
     await credits.indexTracks(library)
