@@ -1,6 +1,6 @@
 const albums = require('./scan/albums.js')
 const genres = require('./scan/genres.js')
-const persons = require('./scan/persons.js')
+const credits = require('./scan/credits.js')
 const tracks = require('./scan/tracks.js')
 
 module.exports = {
@@ -14,8 +14,8 @@ module.exports = {
     await albums.scan(library)
     console.log('[music-indexer]', 'scanning genres')
     await genres.scan(library)
-    console.log('[music-indexer]', 'scanning persons')
-    await persons.scan(library)
+    console.log('[music-indexer]', 'scanning credits')
+    await credits.scan(library)
   },
   load: async (library) => {
     if (!library.tracks) {
@@ -27,9 +27,9 @@ module.exports = {
     await albums.indexAlbumArtists(library.tracks, library.albums)
     await albums.indexAlbumComposers(library.tracks, library.albums)
     console.log('[indexer]', 'indexing persons information')
-    await persons.indexComposerTracks(library.tracks, library.persons)
-    await persons.indexComposerGenres(library.tracks, library.persons)
-    await persons.indexComposerAlbums(library.albums, library.persons)
+    await credits.indexComposerTracks(library.tracks, library.credits)
+    await credits.indexComposerGenres(library.tracks, library.credits)
+    await credits.indexComposerAlbums(library.albums, library.credits)
     console.log('[indexer]', 'indexing genre information')
     await genres.indexGenreAlbums(library.albums, library.genres)
     await genres.indexGenreTracks(library.tracks, library.genres)
