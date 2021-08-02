@@ -1,5 +1,5 @@
 function normalize (text) {
-  return text.toLowerCase().replace(/[\W_]+/g, ' ')
+  return (text || '').toLowerCase().replace(/[\W_]+/g, ' ')
 }
 
 module.exports = {
@@ -13,7 +13,7 @@ async function scanAlbums (library) {
   library.albums = []
   const uniqueKeys = []
   for (const track of library.tracks) {
-    if (!track.album) {
+    if (!track.artist || !track.album) {
       continue
     }
     const album = await processAlbum(library, track, uniqueKeys)
@@ -24,7 +24,7 @@ async function scanAlbums (library) {
 }
 
 function processAlbum (library, track, uniqueKeys) {
-  const key = normalize(track.artists) + normalize(track.album)
+  const key = normalize(track.artist) + normalize(track.album)
   if (uniqueKeys.indexOf(key) === -1) {
     uniqueKeys.push(key)
     return {

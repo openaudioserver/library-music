@@ -1,4 +1,4 @@
-const personTypes = [
+const personCategories = [
   'artist',
   'artists',
   'person',
@@ -21,7 +21,7 @@ module.exports = {
   indexPersonAlbums,
   indexPersonGenres,
   indexPersonTracks,
-  personTypes
+  personCategories
 }
 
 function normalize (text) {
@@ -33,7 +33,7 @@ async function scanPersons (library) {
   library.persons = []
   library.personCategories = []
   for (const track of library.tracks) {
-    for (const type of personTypes) {
+    for (const type of personCategories) {
       if (!track[type] || !track[type].length) {
         continue
       }
@@ -56,24 +56,24 @@ async function processPerson (library, name, uniqueKeys) {
   if (existingIndex === -1) {
     return {
       type: 'person',
-      id: `person_${library.personTypes.length}`,
+      id: `person_${library.personCategories.length}`,
       name
     }
   }
 }
 
-async function indexPersonTracks (media, personTypes) {
-  for (const person of personTypes) {
+async function indexPersonTracks (media, personCategories) {
+  for (const person of personCategories) {
     person.tracks = []
-    const tracks = media.filter(track => track.personTypes.indexOf(person.id) > -1)
+    const tracks = media.filter(track => track.personCategories.indexOf(person.id) > -1)
     for (const track of tracks) {
       person.tracks.push(track.id)
     }
   }
 }
 
-async function indexPersonGenres (media, personTypes, index) {
-  for (const person of personTypes) {
+async function indexPersonGenres (media, personCategories, index) {
+  for (const person of personCategories) {
     person.genres = []
     for (const trackid of person.tracks) {
       const track = index[trackid]
@@ -89,11 +89,11 @@ async function indexPersonGenres (media, personTypes, index) {
   }
 }
 
-async function indexPersonAlbums (albums, personTypes) {
-  for (const person of personTypes) {
+async function indexPersonAlbums (albums, personCategories) {
+  for (const person of personCategories) {
     person.albums = []
     for (const album of albums) {
-      if (!album.personTypes || album.personTypes.indexOf(person.id) === -1) {
+      if (!album.personCategories || album.personCategories.indexOf(person.id) === -1) {
         continue
       }
       person.albums.push(album.id)

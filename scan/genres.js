@@ -14,7 +14,7 @@ async function scanGenres (library) {
   library.genres = []
   for (const track of library.tracks) {
     if (!track.genres || !track.genres.length) {
-      return
+      continue
     }
     const genres = track.genres.split(',')
     for (const i in genres) {

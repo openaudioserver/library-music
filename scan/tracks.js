@@ -8,7 +8,7 @@ async function scanSongs (library) {
   library.tracks = []
   for (const file of library.files) {
     if (file.extension !== 'mp3' && file.extension !== 'flac') {
-      return
+      continue
     }
     const track = await processTrack(library, file)
     if (track) {
