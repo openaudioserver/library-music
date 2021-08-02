@@ -12,31 +12,34 @@ function normalize (text) {
 async function scanGenres (library) {
   const uniqueKeys = []
   library.genres = []
-  await Promise.all(library.tracks.map(async track => {
+  for (const track of library.tracks) {
     if (!track.genres || !track.genres.length) {
       return
     }
     const genres = track.genres.split(',')
     for (const i in genres) {
       const name = genres[i]
-      const key = normalize(name)
-      const existingIndex = uniqueKeys.indexOf(key)
-      if (existingIndex === -1) {
-        uniqueKeys.push(key)
-        genres.push({
-          type: 'genre',
-          id: `genre_${library.genres.length}`,
-          name,
-          displayName: name,
-          sortName: name
-        })
-        genres[i] = genres[genres.length - 1].id
-      } else {
-        genres[i] = genres[existingIndex].id
+      const genre = await processGenre(library, name, uniqueKeys)
+      if (genre) {
+        library.genres.push(genre)
       }
     }
-    track.genres = genres
-  }))
+  }
+}
+
+async function processGenre (library, name, uniqueKeys) {
+  const key = normalize(name)
+  const existingIndex = uniqueKeys.indexOf(key)
+  if (existingIndex === -1) {
+    uniqueKeys.push(key)
+    return {
+      type: 'genre',
+      id: `genre_${library.genres.length}`,
+      name,
+      displayName: name,
+      sortName: name
+    }
+  }
 }
 
 async function indexGenreTracks (media, genres) {

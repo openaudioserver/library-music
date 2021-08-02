@@ -29,9 +29,10 @@ function normalize (text) {
 }
 
 async function scanPersons (library) {
-  const uniquePersons = []
-  library.personTypes = []
-  await Promise.all(library.tracks.map(async track => {
+  const uniqueKeys = []
+  library.persons = []
+  library.personCategories = []
+  for (const track of library.tracks) {
     for (const type of personTypes) {
       if (!track[type] || !track[type].length) {
         continue
@@ -40,29 +41,25 @@ async function scanPersons (library) {
       const names = nameList.split(',')
       for (const i in names) {
         const name = names[i]
-        const key = normalize(names[i])
-        const existingIndex = uniquePersons.indexOf(key)
-        let person
-        if (existingIndex === -1) {
-          person = {
-            type: 'person',
-            id: `person_${library.personTypes.length}`,
-            name,
-            credits: [type]
-          }
-          names[i] = person.id
-          library[type].push(person)
-        } else {
-          person = library.personTypes[existingIndex]
-          if (person.credits.indexOf(type) === -1) {
-            person.credits.push(type)
-          }
-          names[i] = person.id
+        const person = await processPerson(library, name, uniqueKeys)
+        if (person) {
+          library.persons.push(person)
         }
       }
-      track[type] = names
     }
-  }))
+  }
+}
+
+async function processPerson (library, name, uniqueKeys) {
+  const key = normalize(name)
+  const existingIndex = uniqueKeys.indexOf(key)
+  if (existingIndex === -1) {
+    return {
+      type: 'person',
+      id: `person_${library.personTypes.length}`,
+      name
+    }
+  }
 }
 
 async function indexPersonTracks (media, personTypes) {

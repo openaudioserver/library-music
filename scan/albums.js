@@ -1,5 +1,5 @@
 function normalize (text) {
-  return text.toLowerCase().replace(/[\W_]+/g, ' ').trim()
+  return text.toLowerCase().replace(/[\W_]+/g, ' ')
 }
 
 module.exports = {
@@ -11,26 +11,33 @@ module.exports = {
 
 async function scanAlbums (library) {
   library.albums = []
-  const albumIndex = []
-  await Promise.all(library.track.map(async track => {
+  const uniqueKeys = []
+  for (const track of library.tracks) {
     if (!track.album) {
-      return
+      continue
     }
-    const key = normalize(track.artists) + normalize(track.album)
-    if (albumIndex.indexOf(key) === -1) {
-      albumIndex.push(key)
-      library.albums.push({
-        type: 'album',
-        id: `album_${library.albums.length}`,
-        name: track.album,
-        nameSort: track.albumsort || track.album,
-        artist: track.albumartist || track.artist,
-        year: track.year,
-        compilation: track.compilation,
-        totaldiscs: track.totaldiscs
-      })
+    const album = await processAlbum(library, track, uniqueKeys)
+    if (album) {
+      library.albums.push(album)
     }
-  }))
+  }
+}
+
+function processAlbum (library, track, uniqueKeys) {
+  const key = normalize(track.artists) + normalize(track.album)
+  if (uniqueKeys.indexOf(key) === -1) {
+    uniqueKeys.push(key)
+    return {
+      type: 'album',
+      id: `album_${library.albums.length}`,
+      name: track.album,
+      nameSort: track.albumsort || track.album,
+      artist: track.albumartist || track.artist,
+      year: track.year,
+      compilation: track.compilation,
+      totaldiscs: track.totaldiscs
+    }
+  }
 }
 
 async function indexAlbumTracks (media, albums, index) {
