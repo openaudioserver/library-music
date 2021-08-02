@@ -7,6 +7,9 @@ module.exports = {
   scan: async (library) => {
     console.log('[music-indexer]', 'scanning tracks')
     await tracks.scan(library)
+    if (!library.tracks.length) {
+      return console.log('[indexer]', 'no tracks in library')
+    }
     console.log('[music-indexer]', 'scanning albums')
     await albums.scan(library)
     console.log('[music-indexer]', 'scanning genres')
@@ -15,6 +18,9 @@ module.exports = {
     await persons.scan(library)
   },
   load: async (library) => {
+    if (!library.tracks) {
+      return console.log('[indexer]', 'no tracks in library')
+    }
     console.log('[indexer]', 'indexing album information')
     await albums.indexAlbumTracks(library.tracks, library.albums)
     await albums.indexAlbumGenres(library.tracks, library.albums)
