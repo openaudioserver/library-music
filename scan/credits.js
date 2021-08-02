@@ -18,9 +18,9 @@ const creditCategories = [
 
 module.exports = {
   scan: scanCredits,
-  indexCreditAlbums,
-  indexCreditGenres,
-  indexCreditTracks,
+  indexAlbums,
+  indexGenres,
+  indexTracks,
   creditCategories
 }
 
@@ -81,17 +81,32 @@ async function processCreditCategory (library, name, uniqueKeys) {
   }
 }
 
-async function indexCreditTracks (media, creditCategories) {
-  for (const credit of creditCategories) {
+async function indexTracks (credits, tracks) {
+  for (const credit of credits) {
     credit.tracks = []
-    const tracks = media.filter(track => track.creditCategories.indexOf(credit.id) > -1)
+    const creditKey = normalize(credit.name)
     for (const track of tracks) {
-      credit.tracks.push(track.id)
+      for (const type of creditCategories) {
+        if (!track[type]) {
+          continue
+        }
+        const names = track[type].split(',')
+        for (const name of names) {
+          const key = normalize(name)
+          if (key === creditKey) {
+            credits.tracks.push(track.id)
+            break
+          }
+        }
+        if (credit.tracks.indexOf(track.id) > -1) {
+          break
+        }
+      }
     }
   }
 }
 
-async function indexCreditGenres (media, creditCategories, index) {
+async function indexGenres (credits, genres) {
   for (const credit of creditCategories) {
     credit.genres = []
     for (const trackid of credit.tracks) {
@@ -108,7 +123,7 @@ async function indexCreditGenres (media, creditCategories, index) {
   }
 }
 
-async function indexCreditAlbums (albums, creditCategories) {
+async function indexAlbums (credits, albums) {
   for (const credit of creditCategories) {
     credit.albums = []
     for (const album of albums) {
