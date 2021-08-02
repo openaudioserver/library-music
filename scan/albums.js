@@ -12,22 +12,22 @@ module.exports = {
 async function scanAlbums (library) {
   library.albums = []
   const albumIndex = []
-  for (const song of library.songs) {
-    if (!song.album) {
+  for (const track of library.tracks) {
+    if (!track.album) {
       continue
     }
-    const key = normalize(song.artists) + normalize(song.album)
+    const key = normalize(track.artists) + normalize(track.album)
     if (albumIndex.indexOf(key) === -1) {
       albumIndex.push(key)
       library.albums.push({
         type: 'album',
         id: `album_${library.albums.length}`,
-        name: song.album,
-        nameSort: song.albumsort || song.album,
-        artist: song.albumartist || song.artist,
-        year: song.year, 
-        compilation: song.compilation,
-        totaldiscs: song.totaldiscs
+        name: track.album,
+        nameSort: track.albumsort || track.album,
+        artist: track.albumartist || track.artist,
+        year: track.year,
+        compilation: track.compilation,
+        totaldiscs: track.totaldiscs
       })
     }
   }

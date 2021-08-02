@@ -1,7 +1,7 @@
 module.exports = (library, options) => {
-  const song = library.getObject(options.id)
-  if (!song) {
+  const track = library.getObject(options.id)
+  if (!track) {
     throw new Error('invalid-id')
   }
-  return song
+  return track
 }

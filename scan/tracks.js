@@ -5,7 +5,7 @@ module.exports = {
 }
 
 async function scanSongs (library) {
-  library.songs = []
+  library.tracks = []
   library.files.forEach(async file => {
     if (file.extension !== 'mp3' && file.extension !== 'flac') {
       return
@@ -16,9 +16,9 @@ async function scanSongs (library) {
     } catch (error) {
       console.error('error reading meta data', file.path, error)
     }
-    const song = {
+    const track = {
       id: file.id,
-      type: 'song',
+      type: 'track',
       duration: metaData.format.duration,
       bitRate: metaData.format.bitrate,
       codec: metaData.format.codec.toLowerCase(),
@@ -30,23 +30,23 @@ async function scanSongs (library) {
     for (const key in commonTags) {
       if (metaData.common[key]) {
         if (key === 'picture') {
-          song.images = []
+          track.images = []
           for (const image of metaData.common.picture) {
-            song.images.push({
+            track.images.push({
               format: image.format,
               type: image.type,
               size: image.data.length
             })
           }
         } else {
-          song[key] = metaData.common[key]
-          if (Array.isArray(song[key])) {
-            song[key] = song[key].join(', ')
+          track[key] = metaData.common[key]
+          if (Array.isArray(track[key])) {
+            track[key] = track[key].join(', ')
           }
         }
       }
     }
-    library.songs.push(song)
+    library.tracks.push(track)
   })
 }
 

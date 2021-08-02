@@ -1,8 +1,8 @@
 # Music Library
 
-A module for [Library](https://github.com/openaudioserver/library) that indexes the files and extracts `MP3` and `FLAC` songs and uses [Music-MetaData](https://github.com/borewit/music-metadata/) to read embedded information.
+A module for [Library](https://github.com/openaudioserver/library) that indexes the files and extracts `MP3` and `FLAC` tracks and uses [Music-MetaData](https://github.com/borewit/music-metadata/) to read embedded information.
 
-Songs, albums, genres, and any persons associated with them are indexed into `library.songs`, `.library.albums`, `library.genres`, and `library.<persontype>` arrays that can be sorted, filtered and paginated using the API.
+Songs, albums, genres, and any persons associated with them are indexed into `library.tracks`, `.library.albums`, `library.genres`, and `library.<persontype>` arrays that can be sorted, filtered and paginated using the API.
 
 ### Documentation
 

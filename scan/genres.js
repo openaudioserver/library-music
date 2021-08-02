@@ -12,11 +12,11 @@ function normalize (text) {
 async function scanGenres (library) {
   const uniqueKeys = []
   library.genres = []
-  for (const song of library.songs) {
-    if (!song.genres || !song.genres.length) {
+  for (const track of library.tracks) {
+    if (!track.genres || !track.genres.length) {
       continue
     }
-    const genres = song.genres.split(',')
+    const genres = track.genres.split(',')
     for (const i in genres) {
       const name = genres[i]
       const key = normalize(name)
@@ -35,7 +35,7 @@ async function scanGenres (library) {
         genres[i] = genres[existingIndex].id
       }
     }
-    song.genres = genres
+    track.genres = genres
   }
 }
 

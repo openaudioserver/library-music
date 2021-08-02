@@ -31,12 +31,12 @@ function normalize (text) {
 async function scanPersons (library) {
   const uniquePersons = []
   library.personTypes = []
-  for (const song of library.songs) {
+  for (const track of library.tracks) {
     for (const type of personTypes) {
-      if (!song[type] || !song[type].length) {
+      if (!track[type] || !track[type].length) {
         continue
       }
-      const nameList = song[type].split(';').join(',').split('/').join(',')
+      const nameList = track[type].split(';').join(',').split('/').join(',')
       const names = nameList.split(',')
       for (const i in names) {
         const name = names[i]
@@ -60,7 +60,7 @@ async function scanPersons (library) {
           names[i] = person.id
         }
       }
-      song[type] = names
+      track[type] = names
     }
   }
 }
