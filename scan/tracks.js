@@ -56,6 +56,7 @@ async function processTrack (library, file) {
       }
     }
   }
+  return track
 }
 
 const commonTags = [
