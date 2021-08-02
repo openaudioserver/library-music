@@ -27,16 +27,9 @@ async function processTrack (library, file) {
   const track = {
     id: `track_${library.tracks.length + 1}`,
     type: 'track',
-    path: file.path,
-    duration: metaData.format.duration,
-    bitRate: metaData.format.bitrate,
-    codec: metaData.format.codec.toLowerCase(),
-    fileContainer: metaData.format.container.toLowerCase(),
-    sampleRate: metaData.format.container.sampleRate,
-    numberOfChannels: metaData.format.container.numberOfChannels,
-    lossless: metaData.format.lossless
+    path: file.path
   }
-  for (const key of commonTags) {
+  for (const key in metaData.common) {
     if (metaData.common[key]) {
       if (key === 'picture') {
         track.images = []
@@ -48,128 +41,15 @@ async function processTrack (library, file) {
           })
         }
       } else {
-        track[key] = metaData.common[key]
-        if (Array.isArray(track[key])) {
-          track[key] = track[key].join(', ')
-        } else if (track[key].trim) {
-          track[key] = track[key].trim()
+        track.metaData = {}
+        track.metaData[key] = metaData.common[key]
+        if (Array.isArray(track.metaData[key])) {
+          track.metaData[key] = track.metaData[key].join(', ')
+        } else if (track.metaData[key].trim) {
+          track.metaData[key] = track.metaData[key].trim()
         }
       }
     }
   }
   return track
 }
-
-const commonTags = [
-  'track',
-  'disk',
-  'year',
-  'title',
-  'artist',
-  'artists',
-  'albumartist',
-  'album',
-  'date',
-  'originaldate',
-  'originalyear',
-  'comment',
-  'genre',
-  'picture',
-  'composer',
-  'lyrics',
-  'albumsort',
-  'titlesort',
-  'work',
-  'artistsort',
-  'albumartistsort',
-  'composersort',
-  'lyricist',
-  'writer',
-  'conductor',
-  'remixer',
-  'arranger',
-  'engineer',
-  'technician',
-  'producer',
-  'djmixer',
-  'mixer',
-  'publisher',
-  'label',
-  'grouping',
-  'subtitle',
-  'discsubtitle',
-  'totaltracks',
-  'totaldiscs',
-  'compilation',
-  'rating',
-  'bpm',
-  'mood',
-  'media',
-  'catalognumber',
-  'tvShow',
-  'tvShowSort',
-  'tvEpisode',
-  'tvEpisodeId',
-  'tvNetwork',
-  'tvSeason',
-  'podcast',
-  'podcasturl',
-  'releasestatus',
-  'releasetype',
-  'releasecountry',
-  'script',
-  'language',
-  'copyright',
-  'license',
-  'encodedby',
-  'encodersettings',
-  'gapless',
-  'barcode',
-  'isrc',
-  'asin',
-  'musicbrainz_recordingid',
-  'musicbrainz_trackid',
-  'musicbrainz_albumid',
-  'musicbrainz_artistid',
-  'musicbrainz_albumartistid',
-  'musicbrainz_releasegroupid',
-  'musicbrainz_workid',
-  'musicbrainz_trmid',
-  'musicbrainz_discid',
-  'acoustid_id',
-  'acoustid_fingerprint',
-  'musicip_puid',
-  'musicip_fingerprint',
-  'website',
-  'performer:instrument',
-  'peakLevel',
-  'averageLevel',
-  'notes',
-  'key',
-  'originalalbum',
-  'originalartist',
-  'discogs_artist_id',
-  'discogs_label_id',
-  'discogs_master_release_id',
-  'discogs_rating',
-  'discogs_release_id',
-  'discogs_votes',
-  'replaygain_track_gain',
-  'replaygain_track_peak',
-  'replaygain_album_gain',
-  'replaygain_album_peak',
-  'replaygain_track_minmax',
-  'replaygain_album_minmax',
-  'replaygain_undo',
-  'description',
-  'longDescription',
-  'category',
-  'hdVideo',
-  'keywords',
-  'movement',
-  'movementIndex',
-  'movementTotal',
-  'podcastId',
-  'showMovement',
-  'stik'
-]

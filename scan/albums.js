@@ -1,12 +1,14 @@
-function normalize (text) {
-  return (text || '').toLowerCase().replace(/[\W_]+/g, ' ')
-}
+const creditCategories = require('./credits.js').creditCategories
 
 module.exports = {
   scan: scanAlbums,
-  indexAlbumTracks,
-  indexAlbumGenres,
-  indexAlbumPersons
+  indexTracks,
+  indexGenres,
+  indexCredits
+}
+
+function normalize (text) {
+  return (text || '').toLowerCase().replace(/[\W_]+/g, '')
 }
 
 async function scanAlbums (library) {
@@ -40,21 +42,21 @@ function processAlbum (library, track, uniqueKeys) {
   }
 }
 
-async function indexAlbumTracks (media, albums, index) {
-  for (const album of albums) {
+async function indexTracks (library) {
+  for (const album of library.albums) {
     album.tracks = []
-    const tracks = media.filter(track => track.albumid === album.id)
-    for (const track of tracks) {
+    const albumTracks = library.tracks.filter(track => track.albumid === album.id)
+    for (const track of albumTracks) {
       album.tracks.push(track.id)
     }
   }
 }
 
-async function indexAlbumGenres (media, albums, index) {
-  for (const album of albums) {
+async function indexGenres (library) {
+  for (const album of library.albums) {
     album.genres = []
     for (const trackid of album.tracks) {
-      const track = index[trackid]
+      const track = library.getObject(trackid)
       if (!track.genres) {
         continue
       }
@@ -67,17 +69,19 @@ async function indexAlbumGenres (media, albums, index) {
   }
 }
 
-async function indexAlbumPersons (media, albums, index) {
-  for (const album of albums) {
-    album.composers = []
-    for (const trackid of album.tracks) {
-      const track = index[trackid]
-      if (!track.composers) {
-        continue
-      }
-      for (const composerid of track.composers) {
-        if (album.composers.indexOf(composerid) === -1) {
-          album.composers.push(composerid)
+async function indexCredits (library) {
+  for (const album of library.albums) {
+    for (const type of creditCategories) {
+      for (const trackid of album.tracks) {
+        const track = library.getObject(trackid)
+        if (!track[type]) {
+          continue
+        }
+        for (const creditid of track[type]) {
+          if (!album[type] || album[type].indexOf(composerid) === -1) {
+            album[type] = album[type] || []
+            album[type].push(composerid)
+          }
         }
       }
     }

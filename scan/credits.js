@@ -25,7 +25,7 @@ module.exports = {
 }
 
 function normalize (text) {
-  return text.toLowerCase().replace(/[\W_]+/g, ' ').trim()
+  return text.toLowerCase().replace(/[\W_]+/g, '').trim()
 }
 
 async function scanCredits (library) {
@@ -34,12 +34,12 @@ async function scanCredits (library) {
   library.creditCategories = []
   for (const track of library.tracks) {
     for (const type of creditCategories) {
-      if (!track[type] || !track[type].length) {
+      if (!track.metaData[type] || !track.metaData[type].length) {
         continue
       }
       const category = await processCreditCategory(library, type, uniqueKeys)
       let categoryItems = 0
-      const nameList = track[type].split(';').join(',').split('/').join(',')
+      const nameList = track.metaData[type].split(';').join(',').split('/').join(',')
       const names = nameList.split(',')
       for (const i in names) {
         const name = names[i]
@@ -87,10 +87,10 @@ async function indexTracks (credits, tracks) {
     const creditKey = normalize(credit.name)
     for (const track of tracks) {
       for (const type of creditCategories) {
-        if (!track[type]) {
+        if (!track.metaData[type]) {
           continue
         }
-        const names = track[type].split(',')
+        const names = track.metaData[type].split(',')
         for (const name of names) {
           const key = normalize(name)
           if (key === creditKey) {

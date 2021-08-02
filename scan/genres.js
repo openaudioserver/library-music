@@ -1,12 +1,12 @@
 module.exports = {
   scan: scanGenres,
-  indexGenreAlbums,
-  indexGenrePersons,
-  indexGenreTracks
+  indexAlbums,
+  indexPersons,
+  indexTracks
 }
 
 function normalize (text) {
-  return text.toLowerCase().replace(/[\W_]+/g, ' ').trim()
+  return text.toLowerCase().replace(/[\W_]+/g, '').trim()
 }
 
 async function scanGenres (library) {
@@ -42,37 +42,39 @@ async function processGenre (library, name, uniqueKeys) {
   }
 }
 
-async function indexGenreTracks (media, genres) {
-  for (const genre of genres) {
+async function indexTracks (library) {
+  for (const genre of library.genres) {
     genre.tracks = []
-    const tracks = media.filter(track => track.genres && track.genres.indexOf(genre.id) > -1)
+    const tracks = library.tracks.filter(track => track.genres && track.genres.indexOf(genre.id) > -1)
     for (const track of tracks) {
       genre.tracks.push(track.id)
     }
   }
 }
 
-async function indexGenrePersons (media, genres, index) {
-  for (const genre of genres) {
+async function indexPersons (library) {
+  for (const genre of library.genres) {
     genre.composers = []
     for (const trackid of genre.tracks) {
-      const track = index[trackid]
-      if (!track.composers) {
-        continue
-      }
-      for (const composerid of track.composers) {
-        if (genre.composers.indexOf(composerid) === -1) {
-          genre.composers.push(composerid)
+      const track = library.getObject(trackid)
+      for (const category of library.creditCategories) {
+        if (!track.metaData[category]) {
+          continue
+        }
+        for (const composerid of track.composers) {
+          if (genre.composers.indexOf(composerid) === -1) {
+            genre.composers.push(composerid)
+          }
         }
       }
     }
   }
 }
 
-async function indexGenreAlbums (albums, genres) {
-  for (const genre of genres) {
+async function indexAlbums (library) {
+  for (const genre of library.genres) {
     genre.albums = []
-    for (const album of albums) {
+    for (const album of library.albums) {
       if (!album.genres || album.genres.indexOf(genre.id) === -1) {
         continue
       }
