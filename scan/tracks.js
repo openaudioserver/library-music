@@ -1,10 +1,10 @@
 const MusicMetaData = require('music-metadata')
 
 module.exports = {
-  scan: scanSongs
+  scan: scanTracks
 }
 
-async function scanSongs (library) {
+async function scanTracks (library) {
   library.tracks = []
   for (const file of library.files) {
     if (file.extension !== 'mp3' && file.extension !== 'flac') {
@@ -56,7 +56,6 @@ async function processTrack (library, file) {
       }
     }
   }
-  library.tracks.push(track)
 }
 
 const commonTags = [
