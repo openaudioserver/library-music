@@ -1,7 +1,9 @@
+const creditCategories = require('./credits.js').creditCategories
+
 module.exports = {
   scan: scanGenres,
   indexAlbums,
-  indexPersons,
+  indexCredits,
   indexTracks
 }
 
@@ -52,18 +54,18 @@ async function indexTracks (library) {
   }
 }
 
-async function indexPersons (library) {
+async function indexCredits (library) {
   for (const genre of library.genres) {
-    genre.composers = []
     for (const trackid of genre.tracks) {
       const track = library.getObject(trackid)
       for (const category of library.creditCategories) {
         if (!track.metaData[category]) {
           continue
         }
-        for (const composerid of track.composers) {
-          if (genre.composers.indexOf(composerid) === -1) {
-            genre.composers.push(composerid)
+        for (const id of track[category]) {
+          genre[category] = genre[category] || []
+          if (genre[category].indexOf(id) === -1) {
+            genre[category].push(id)
           }
         }
       }
