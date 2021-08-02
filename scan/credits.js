@@ -81,11 +81,11 @@ async function processCreditCategory (library, name, uniqueKeys) {
   }
 }
 
-async function indexTracks (credits, tracks) {
-  for (const credit of credits) {
+async function indexTracks (library) {
+  for (const credit of library.credits) {
     credit.tracks = []
     const creditKey = normalize(credit.name)
-    for (const track of tracks) {
+    for (const track of library.tracks) {
       for (const type of creditCategories) {
         if (!track.metaData[type]) {
           continue
@@ -94,7 +94,7 @@ async function indexTracks (credits, tracks) {
         for (const name of names) {
           const key = normalize(name)
           if (key === creditKey) {
-            credits.tracks.push(track.id)
+            library.credits.tracks.push(track.id)
             break
           }
         }
@@ -106,11 +106,11 @@ async function indexTracks (credits, tracks) {
   }
 }
 
-async function indexGenres (credits, genres) {
+async function indexGenres (library) {
   for (const credit of creditCategories) {
     credit.genres = []
     for (const trackid of credit.tracks) {
-      const track = index[trackid]
+      const track = library.getObject(trackid)
       if (!track.genres) {
         continue
       }
@@ -123,12 +123,22 @@ async function indexGenres (credits, genres) {
   }
 }
 
-async function indexAlbums (credits, albums) {
+async function indexAlbums (library) {
   for (const credit of creditCategories) {
     credit.albums = []
-    for (const album of albums) {
-      if (!album.creditCategories || album.creditCategories.indexOf(credit.id) === -1) {
-        continue
+    for (const album of library.albums) {
+      for (const type of creditCategories) {
+        for (const trackid of album.tracks) {
+          const track = library.getObject(trackid)
+          if (!track.metaData[type]) {
+            continue
+          }
+          for (const id of track.metaData[type]) {
+            if (credit.albums.indexOf(id) === -1) {
+              credit.albums.push(id)
+            }
+          }
+        }
       }
       credit.albums.push(album.id)
     }
