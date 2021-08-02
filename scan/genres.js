@@ -34,7 +34,7 @@ async function processGenre (library, name, uniqueKeys) {
     uniqueKeys.push(key)
     return {
       type: 'genre',
-      id: `genre_${library.genres.length}`,
+      id: `genre_${library.genres.length} + 1`,
       name,
       displayName: name,
       sortName: name

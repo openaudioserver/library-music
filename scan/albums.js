@@ -29,7 +29,7 @@ function processAlbum (library, track, uniqueKeys) {
     uniqueKeys.push(key)
     return {
       type: 'album',
-      id: `album_${library.albums.length}`,
+      id: `album_${library.albums.length + 1}`,
       name: track.album,
       nameSort: track.albumsort || track.album,
       artist: track.albumartist || track.artist,

@@ -63,7 +63,7 @@ async function processCredit (library, name, uniqueKeys) {
     uniqueKeys.push(key)
     return {
       type: 'credit',
-      id: `credit_${library.credits.length}`,
+      id: `credit_${library.credits.length + 1}`,
       name
     }
   }

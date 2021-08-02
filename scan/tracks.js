@@ -25,8 +25,9 @@ async function processTrack (library, file) {
     console.error('[music-indexer]', 'error reading meta data', file.path, error)
   }
   const track = {
-    id: file.id,
+    id: `track_${library.tracks.length + 1}`,
     type: 'track',
+    path: file.path,
     duration: metaData.format.duration,
     bitRate: metaData.format.bitrate,
     codec: metaData.format.codec.toLowerCase(),
