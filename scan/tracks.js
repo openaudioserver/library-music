@@ -27,7 +27,7 @@ async function scanSongs (library) {
       numberOfChannels: metaData.format.container.numberOfChannels,
       lossless: metaData.format.lossless
     }
-    for (const key in commonTags) {
+    for (const key of commonTags) {
       if (metaData.common[key]) {
         if (key === 'picture') {
           track.images = []
@@ -42,6 +42,8 @@ async function scanSongs (library) {
           track[key] = metaData.common[key]
           if (Array.isArray(track[key])) {
             track[key] = track[key].join(', ')
+          } else if (track[key].length) {
+            track[key] = track[key].trim()
           }
         }
       }
