@@ -25,7 +25,7 @@ module.exports = {
 }
 
 function normalize (text) {
-  return text.toLowerCase().replace(/[\W_]+/g, ' ')
+  return text.toLowerCase().replace(/[\W_]+/g, ' ').trim()
 }
 
 async function scanPersons (library) {

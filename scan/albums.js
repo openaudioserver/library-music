@@ -1,5 +1,5 @@
 function normalize (text) {
-  return text.toLowerCase().replace(/[\W_]+/g, ' ')
+  return text.toLowerCase().replace(/[\W_]+/g, ' ').trim()
 }
 
 module.exports = {
