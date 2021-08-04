@@ -54,6 +54,8 @@ async function scanCredits (library) {
       }
     }
   }
+  library.indexArray(library.creditCategories)
+  library.indexArray(library.credits)
 }
 
 async function processCredit (library, name, uniqueKeys) {
@@ -82,6 +84,7 @@ async function processCreditCategory (library, name, uniqueKeys) {
 }
 
 async function indexTracks (library) {
+  console.log('index tracks')
   for (const credit of library.credits) {
     credit.tracks = []
     const creditKey = normalize(credit.name)
@@ -93,8 +96,8 @@ async function indexTracks (library) {
         const names = track.metaData[type].split(',')
         for (const name of names) {
           const key = normalize(name)
-          if (key === creditKey) {
-            library.credits.tracks.push(track.id)
+          if (key === creditKey) {            
+            credit.tracks.push(track.id)
             break
           }
         }
@@ -107,10 +110,10 @@ async function indexTracks (library) {
 }
 
 async function indexGenres (library) {
-  for (const credit of creditCategories) {
+  console.log('index genres')
+  for (const type of creditCategories) {
     credit.genres = []
-    for (const trackid of credit.tracks) {
-      const track = library.getObject(trackid)
+    for (const track of library.tracks) {
       if (!track.genres) {
         continue
       }
@@ -124,7 +127,8 @@ async function indexGenres (library) {
 }
 
 async function indexAlbums (library) {
-  for (const credit of creditCategories) {
+  console.log('index albums')
+  for (const credit of library.credits) {
     credit.albums = []
     for (const album of library.albums) {
       for (const type of creditCategories) {

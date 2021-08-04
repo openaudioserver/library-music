@@ -23,6 +23,7 @@ async function scanAlbums (library) {
       library.albums.push(album)
     }
   }
+  library.indexArray(library.albums)
 }
 
 function processAlbum (library, track, uniqueKeys) {

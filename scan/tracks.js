@@ -15,6 +15,7 @@ async function scanTracks (library) {
       library.tracks.push(track)
     }
   }
+  library.indexArray(library.tracks)
 }
 
 async function processTrack (library, file) {
@@ -41,12 +42,11 @@ async function processTrack (library, file) {
           })
         }
       } else {
-        track.metaData = {}
-        track.metaData[key] = metaData.common[key]
-        if (Array.isArray(track.metaData[key])) {
-          track.metaData[key] = track.metaData[key].join(', ')
-        } else if (track.metaData[key].trim) {
-          track.metaData[key] = track.metaData[key].trim()
+        track[key] = metaData.common[key]
+        if (Array.isArray(track[key])) {
+          track[key] = track[key].join(', ')
+        } else if (track[key].trim) {
+          track[key] = track[key].trim()
         }
       }
     }

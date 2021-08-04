@@ -27,6 +27,7 @@ async function scanGenres (library) {
       }
     }
   }
+  library.indexArray(library.genres)
 }
 
 async function processGenre (library, name, uniqueKeys) {
