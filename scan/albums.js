@@ -78,7 +78,7 @@ async function indexCredits (library) {
         if (!track[type]) {
           continue
         }
-        for (const creditid of track[type]) {
+        for (const jj of track[type]) {
           if (!album[type] || album[type].indexOf(composerid) === -1) {
             album[type] = album[type] || []
             album[type].push(composerid)

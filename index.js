@@ -29,7 +29,7 @@ module.exports = {
     await genres.indexAlbums(library)
     await genres.indexTracks(library)
     await genres.indexCredits(library)
-    console.log('[indexer]', 'indexing persons information')
+    console.log('[indexer]', 'indexing credit information')
     await credits.indexTracks(library)
     await credits.indexGenres(library)
     await credits.indexAlbums(library)
@@ -46,8 +46,8 @@ module.exports = {
       list: require('./api/genres.list.js')
     }
     library.api.persons = {
-      get: require('./api/persons.get.js'),
-      list: require('./api/persons.list.js')
+      get: require('./api/credits.get.js'),
+      list: require('./api/credits.list.js')
     }
   }
 }
