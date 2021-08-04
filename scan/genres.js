@@ -60,7 +60,7 @@ async function indexCredits (library) {
     for (const trackid of genre.tracks) {
       const track = library.getObject(trackid)
       for (const category of library.creditCategories) {
-        if (!track.metaData[category]) {
+        if (!track[category]) {
           continue
         }
         for (const id of track[category]) {
