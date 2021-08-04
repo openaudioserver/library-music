@@ -130,22 +130,28 @@ async function indexAlbums (library) {
   console.log('index albums')
   for (const credit of library.credits) {
     credit.albums = []
-    for (const album of library.albums) {
-      for (const type of creditCategories) {
+    const normalizedName = normalize(credit.name)
+    for (const type of creditCategories) {
+      for (const album of library.albums) {
         for (const trackid of album.tracks) {
-          const track = library.getObject(trackid)
+          const track = await library.getObject(trackid)
           if (!track[type]) {
             continue
           }
-          for (const id of track[type]) {
-            if (credit.albums.indexOf(album.id) === -1) {
+          for (const name of track[type]) {
+            if (normalizedName === normalize(name)) {
               credit.albums.push(album.id)
               break
             }
           }
+          if (credit.albums[credit.albums.length - 1] === album.id) {
+            break
+          }
+        }
+        if (credit.albums[credit.albums.length - 1] === album.id) {
+          break
         }
       }
-      credit.albums.push(album.id)
     }
   }
 }

@@ -26,7 +26,7 @@ async function scanAlbums (library) {
   library.indexArray(library.albums)
 }
 
-function processAlbum (library, track, uniqueKeys) {
+async function processAlbum (library, track, uniqueKeys) {
   const key = normalize(track.artist) + normalize(track.album)
   if (uniqueKeys.indexOf(key) === -1) {
     uniqueKeys.push(key)
