@@ -33,6 +33,7 @@ async function scanCredits (library) {
   library.credits = []
   library.creditCategories = []
   for (const track of library.tracks) {
+    console.log(track)
     for (const type of creditCategories) {
       if (!track[type] || !track[type].length) {
         continue
@@ -110,8 +111,7 @@ async function indexTracks (library) {
 }
 
 async function indexGenres (library) {
-  console.log('index genres')
-  for (const type of creditCategories) {
+  for (const credit of library.credits) {
     credit.genres = []
     for (const track of library.tracks) {
       if (!track.genres) {
@@ -138,8 +138,9 @@ async function indexAlbums (library) {
             continue
           }
           for (const id of track[type]) {
-            if (credit.albums.indexOf(id) === -1) {
-              credit.albums.push(id)
+            if (credit.albums.indexOf(album.id) === -1) {
+              credit.albums.push(album.id)
+              break
             }
           }
         }
