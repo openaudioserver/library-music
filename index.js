@@ -5,7 +5,7 @@ const tracks = require('./scan/tracks.js')
 
 module.exports = {
   scan: async (library) => {
-    console.log('[music-indexer]', 'scanning tracks', library)
+    console.log('[music-indexer]', 'scanning tracks')
     await tracks.scan(library)
     if (!library.tracks.length) {
       return console.log('[indexer]', 'no tracks in library')

@@ -33,7 +33,6 @@ async function scanCredits (library) {
   library.credits = []
   library.creditCategories = []
   for (const track of library.tracks) {
-    console.log(track)
     for (const type of creditCategories) {
       if (!track[type] || !track[type].length) {
         continue
