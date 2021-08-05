@@ -1,4 +1,4 @@
-# Music Library
+# Library: Music
 
 A module for [Library](https://github.com/openaudioserver/library) that indexes the files and extracts `MP3` and `FLAC` tracks and uses [Music-MetaData](https://github.com/borewit/music-metadata/) to read embedded information.
 
