@@ -86,7 +86,7 @@ async function processCreditCategory (library, name, uniqueKeys) {
     uniqueKeys.push(name)
     return {
       type: 'category',
-      id: `category_${library.creditCategories.length}`,
+      id: `category_${library.creditCategories.length + 1}`,
       name
     }
   }
