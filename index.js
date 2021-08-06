@@ -33,21 +33,24 @@ module.exports = {
     await credits.indexTracks(library)
     await credits.indexGenres(library)
     await credits.indexAlbums(library)
-    library.api.albums = {
-      get: require('./api/albums.get.js'),
-      list: require('./api/albums.list.js')
+    library.music = {
+      albums: {
+        get: require('./api/albums.get.js'),
+        list: require('./api/albums.list.js')
+      },
+      tracks: {
+        get: require('./api/tracks.get.js'),
+        list: require('./api/tracks.list.js')
+      },
+      genres: {
+        get: require('./api/genres.get.js'),
+        list: require('./api/genres.list.js')
+      },
+      persons: {
+        get: require('./api/credits.get.js'),
+        list: require('./api/credits.list.js')
+      }
     }
-    library.api.tracks = {
-      get: require('./api/tracks.get.js'),
-      list: require('./api/tracks.list.js')
-    }
-    library.api.genres = {
-      get: require('./api/genres.get.js'),
-      list: require('./api/genres.list.js')
-    }
-    library.api.persons = {
-      get: require('./api/credits.get.js'),
-      list: require('./api/credits.list.js')
-    }
+    return library
   }
 }
