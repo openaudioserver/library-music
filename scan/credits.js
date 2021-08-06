@@ -32,24 +32,30 @@ async function scanCredits (library) {
   const uniqueKeys = []
   library.credits = []
   library.creditCategories = []
+  let artistCategory
   for (const track of library.tracks) {
     for (const type of creditCategories) {
       if (!track[type] || !track[type].length) {
         continue
       }
-      const category = await processCreditCategory(library, type, uniqueKeys)
+      let category = await processCreditCategory(library, type, uniqueKeys)
+      if (type === 'artist') {
+        artistCategory = category
+      } else if (type === 'artists') {
+        category = artistCategory
+      }
       let categoryItems = 0
       const nameList = track[type].split(';').join(',').split('/').join(',')
       const names = nameList.split(',')
       for (const i in names) {
         const name = names[i]
-        const credit = await processCredit(library, name, uniqueKeys)
+        const credit = await processCredit(library, name, category.id, uniqueKeys)
         if (credit) {
           library.credits.push(credit)
           categoryItems++
         }
       }
-      if (category && categoryItems > 0) {
+      if (type !== 'artists' && category && categoryItems > 0) {
         library.creditCategories.push(category)
       }
     }
@@ -58,7 +64,7 @@ async function scanCredits (library) {
   library.indexArray(library.credits)
 }
 
-async function processCredit (library, name, uniqueKeys) {
+async function processCredit (library, name, categoryid, uniqueKeys) {
   const key = normalize(name)
   const existingIndex = uniqueKeys.indexOf(key)
   if (existingIndex === -1) {
@@ -66,8 +72,11 @@ async function processCredit (library, name, uniqueKeys) {
     return {
       type: 'credit',
       id: `credit_${library.credits.length + 1}`,
-      name
+      name,
+      categories: [categoryid]
     }
+  } else if (library.credits[existingIndex].categories.indexOf(categoryid) === -1) {
+    library.credits[existingIndex].categories.push(categoryid)
   }
 }
 
