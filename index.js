@@ -33,7 +33,7 @@ module.exports = {
     await credits.indexTracks(library)
     await credits.indexGenres(library)
     await credits.indexAlbums(library)
-    library.music = {
+    library.api.music = {
       albums: {
         get: require('./api/albums.get.js'),
         list: require('./api/albums.list.js')
