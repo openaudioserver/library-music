@@ -30,23 +30,25 @@ async function processTrack (library, file) {
     type: 'track',
     path: file.path
   }
-  for (const key in metaData.common) {
-    if (metaData.common[key]) {
-      if (key === 'picture') {
-        track.images = []
-        for (const image of metaData.common.picture) {
-          track.images.push({
-            format: image.format,
-            type: image.type,
-            size: image.data.length
-          })
-        }
-      } else {
-        track[key] = metaData.common[key]
-        if (Array.isArray(track[key])) {
-          track[key] = track[key].join(', ')
-        } else if (track[key].trim) {
-          track[key] = track[key].trim()
+  for (const group in [ 'common', 'format' ]) {
+    for (const key in metaData[group]) {
+      if (metaData[group][key]) {
+        if (key === 'picture') {
+          track.images = []
+          for (const image of metaData[group].picture) {
+            track.images.push({
+              format: image.format,
+              type: image.type,
+              size: image.data.length
+            })
+          }
+        } else {
+          track[key] = metaData[group][key]
+          if (Array.isArray(track[key])) {
+            track[key] = track[key].join(', ')
+          } else if (track[key].trim) {
+            track[key] = track[key].trim()
+          }
         }
       }
     }
