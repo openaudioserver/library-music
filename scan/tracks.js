@@ -30,7 +30,7 @@ async function processTrack (library, file) {
     type: 'track',
     path: file.path
   }
-  for (const group in [ 'common', 'format' ]) {
+  for (const group in ['common', 'format']) {
     for (const key in metaData[group]) {
       if (metaData[group][key]) {
         if (key === 'picture') {
@@ -42,6 +42,9 @@ async function processTrack (library, file) {
               size: image.data.length
             })
           }
+        } else if (key === 'disk' || key === 'track') {
+          track.disc = metaData.common[key].no || 0
+          track.discs = metaData.common[key].of || 0
         } else {
           track[key] = metaData[group][key]
           if (Array.isArray(track[key])) {
