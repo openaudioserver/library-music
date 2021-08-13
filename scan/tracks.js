@@ -43,8 +43,9 @@ async function processTrack (library, file) {
             })
           }
         } else if (key === 'disk' || key === 'track') {
-          track.disc = metaData.common[key].no || 0
-          track.discs = metaData.common[key].of || 0
+          const label = key === 'disk' ? 'disc' : 'track'
+          track[label] = metaData.common[key].no || 0
+          track[`${label}s`] = metaData.common[key].of || 0
         } else {
           track[key] = metaData[group][key]
           if (Array.isArray(track[key])) {
