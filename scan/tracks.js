@@ -30,7 +30,7 @@ async function processTrack (library, file) {
     type: 'track',
     path: file.path
   }
-  for (const group in ['common', 'format']) {
+  for (const group of ['common', 'format']) {
     for (const key in metaData[group]) {
       if (metaData[group][key]) {
         if (key === 'picture') {
